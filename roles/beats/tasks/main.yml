@@ -1,9 +1,5 @@
 ---
 
-- name: Prepare for whole stack roles if used
-  when:
-  - elastic_stack_full_stack | bool
-  block:
 
   - name: Enable security if enabled for whole stack
     set_fact:
