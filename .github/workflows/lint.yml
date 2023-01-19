@@ -1,0 +1,40 @@
+---
+name: YAML Lint
+on:
+  push:
+    branches:
+      - main
+      - 'feature/**'
+      - 'fix/**'
+      - '!doc/**'
+    paths:
+      - 'roles/elasticsearch/**'
+  pull_request:
+    branches:
+      - 'feature/**'
+      - 'fix/**'
+      - '!doc/**'
+    paths:
+      - 'roles/elasticsearch/**'
+
+jobs:
+  lint_role_elasticsearch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the codebase.
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install test dependencies.
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install yamllint ansible-lint
+
+      - name: Lint code.
+        run: |
+          yamllint roles/elasticsearch/
+          ansible-lint roles/elasticsearch/
